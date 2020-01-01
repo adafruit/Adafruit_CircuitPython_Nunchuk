@@ -9,8 +9,8 @@ Introduction
     :target: https://discord.gg/nBQh6qu
     :alt: Discord
 
-.. image:: https://travis-ci.com/adafruit/Adafruit_CircuitPython_Nunchuk.svg?branch=master
-    :target: https://travis-ci.com/adafruit/Adafruit_CircuitPython_Nunchuk
+.. image:: https://github.com/adafruit/Adafruit_CircuitPython_Nunchuk/workflows/Build%20CI/badge.svg
+    :target: https://github.com/adafruit/Adafruit_CircuitPython_Nunchuk/actions/
     :alt: Build Status
 
 CircuitPython library for Nintendo Nunchuk controller
