@@ -52,6 +52,7 @@ _DEFAULT_ADDRESS = 0x52
 _I2C_INIT_DELAY = 0.1
 _I2C_READ_DELAY = 0.01
 
+
 class Nunchuk:
     """Class which provides interface to Nintendo Nunchuk controller."""
 
@@ -62,9 +63,9 @@ class Nunchuk:
         with self.i2c_device as i2c_dev:
             # turn off encrypted data
             # http://wiibrew.org/wiki/Wiimote/Extension_Controllers
-            i2c_dev.write(b'\xF0\x55')
+            i2c_dev.write(b"\xF0\x55")
             time.sleep(_I2C_INIT_DELAY)
-            i2c_dev.write(b'\xFB\x00')
+            i2c_dev.write(b"\xFB\x00")
 
     @property
     def joystick(self):
@@ -73,12 +74,12 @@ class Nunchuk:
         return self.buffer[0], self.buffer[1]
 
     @property
-    def button_C(self): #pylint: disable=invalid-name
+    def button_C(self):  # pylint: disable=invalid-name
         """Return current pressed state of button C."""
         return not bool(self._read_data()[5] & 0x02)
 
     @property
-    def button_Z(self): #pylint: disable=invalid-name
+    def button_Z(self):  # pylint: disable=invalid-name
         """Return current pressed state of button Z."""
         return not bool(self._read_data()[5] & 0x01)
 
@@ -95,7 +96,7 @@ class Nunchuk:
         return x, y, z
 
     def _read_data(self):
-        return self._read_register(b'\x00')
+        return self._read_register(b"\x00")
 
     def _read_register(self, address):
         with self.i2c_device as i2c:

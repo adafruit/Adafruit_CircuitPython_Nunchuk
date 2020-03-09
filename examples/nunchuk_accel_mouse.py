@@ -14,24 +14,24 @@ scaleY = 0.5
 cDown = False
 zDown = False
 
-#This is to allow double checking (only on left click - and it doesn't really work)
-CHECK_COUNT=0
+# This is to allow double checking (only on left click - and it doesn't really work)
+CHECK_COUNT = 0
 
 
-#This is just to show that we're getting back data - uncomment it and hold down the buttons
-#while True:
+# This is just to show that we're getting back data - uncomment it and hold down the buttons
+# while True:
 #    print((0 if nc.button_C else 1, 0 if nc.button_Z else 1))
 
 while True:
     accel = nc.acceleration
-#    print(accel)
-#    x, y = nc.joystick
-#    print((x,y))
-    x = accel[0]/4
-    y = accel[1]/4
-    print((x,y))
-	#Eliminate spurious reads
-    if (x == 255 or y == 255):
+    #    print(accel)
+    #    x, y = nc.joystick
+    #    print((x,y))
+    x = accel[0] / 4
+    y = accel[1] / 4
+    print((x, y))
+    # Eliminate spurious reads
+    if x == 255 or y == 255:
         continue
     relX = x - centerX
     relY = y - centerY
