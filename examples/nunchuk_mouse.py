@@ -1,10 +1,11 @@
 import board
 import adafruit_nunchuk
+import usb_hid
 from adafruit_hid.mouse import Mouse
 
 THRESHOLD = 10
 
-m = Mouse()
+m = Mouse(usb_hid.devices)
 nc = adafruit_nunchuk.Nunchuk(board.I2C())
 
 while True:
