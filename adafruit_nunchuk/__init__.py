@@ -6,7 +6,7 @@
 ================================================================================
 Base Library for the Nintento Nunchuck Extension Controller libraries.
 
-* Author(s): John Furcean 
+* Author(s): John Furcean
 
 Implementation Notes
 --------------------
@@ -31,7 +31,8 @@ __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_PortalBase.git"
 _DEFAULT_ADDRESS = 0x52
 _I2C_INIT_DELAY = 0.1
 _I2C_READ_DELAY = 0.01
-_I2C_BUFFER_UPDATE_DELAY = .05
+_I2C_BUFFER_UPDATE_DELAY = 0.05
+
 
 class NunchukBase:
     """Base Class which provides interface to Nintendo Nunchuk style controllers.
@@ -52,8 +53,8 @@ class NunchukBase:
             i2c_dev.write(b"\xFB\x00")
         self.last_updated = time.monotonic()
 
-    
-    def _read_data(self):
+    def read_data(self):
+        """Reads data stream from register"""
         if (time.monotonic() - self.last_updated) > _I2C_BUFFER_UPDATE_DELAY:
             self.last_updated = time.monotonic()
             self._read_register(b"\x00")
