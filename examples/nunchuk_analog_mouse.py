@@ -2,11 +2,12 @@
 # SPDX-License-Identifier: MIT
 
 import board
+import usb_hid
 from adafruit_hid.mouse import Mouse
-import adafruit_nunchuk
+from adafruit_nunchuk.nunchuk import Nunchuk
 
-m = Mouse()
-nc = adafruit_nunchuk.Nunchuk(board.I2C())
+m = Mouse(usb_hid.devices)
+nc = Nunchuk(board.I2C())
 
 centerX = 128
 centerY = 128

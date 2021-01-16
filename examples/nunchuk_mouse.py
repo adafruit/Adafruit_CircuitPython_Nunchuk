@@ -2,13 +2,14 @@
 # SPDX-License-Identifier: MIT
 
 import board
+import usb_hid
 from adafruit_hid.mouse import Mouse
-import adafruit_nunchuk
+from adafruit_nunchuk.nunchuk import Nunchuk
 
 THRESHOLD = 10
 
-m = Mouse()
-nc = adafruit_nunchuk.Nunchuk(board.I2C())
+m = Mouse(usb_hid.devices)
+nc = Nunchuk(board.I2C())
 
 while True:
     x, y = nc.joystick

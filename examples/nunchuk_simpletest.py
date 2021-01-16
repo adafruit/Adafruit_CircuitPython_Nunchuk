@@ -3,7 +3,7 @@
 
 import time
 import board
-import adafruit_nunchuk
+from adafruit_nunchuk.nunchuk import Nunchuk
 
 nc = adafruit_nunchuk.Nunchuk(board.I2C())
 
