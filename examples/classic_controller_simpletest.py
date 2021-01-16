@@ -18,9 +18,9 @@ while True:
 
     # Triggers: 0-31
     if controller.trigger_right > 0:
-        print(f"Right Trigger (x,y): {controller.trigger_right}")
+        print(f"Right Trigger: {controller.trigger_right}")
     if controller.trigger_left > 0:
-        print(f"Left Trigger (x,y): {controller.trigger_left}")
+        print(f"Left Trigger: {controller.trigger_left}")
 
     # DPad: True or False
     if controller.dpad_down:
