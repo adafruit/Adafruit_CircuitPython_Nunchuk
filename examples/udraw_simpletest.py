@@ -2,9 +2,9 @@
 #
 # SPDX-License-Identifier: MIT
 import board
-from adafruit_nunchuk.udraw import uDraw
+from adafruit_nunchuk.udraw import UDraw
 
-controller = uDraw(board.I2C())
+controller = UDraw(board.I2C())
 
 while True:
 

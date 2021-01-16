@@ -30,7 +30,7 @@ _I2C_INIT_DELAY = 0.1
 _I2C_READ_DELAY = 0.01
 
 
-class uDraw(NunchukBase):
+class UDraw(NunchukBase):
     """Class which provides interface to the uDraw GameTablet."""
 
     def __init__(self, i2c, address=_DEFAULT_ADDRESS):
