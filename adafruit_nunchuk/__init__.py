@@ -36,8 +36,8 @@ _I2C_BUFFER_UPDATE_DELAY = 0.05
 
 class NunchukBase:
     """Base Class which provides interface to Nintendo Nunchuk style controllers.
-        :param i2c: An i2c device.
-        :address: an i2c address. Defaults to _DEFAULT_ADDRESS (0x52).
+    :param i2c: An i2c device.
+    :address: an i2c address. Defaults to _DEFAULT_ADDRESS (0x52).
     """
 
     def __init__(self, i2c, address=_DEFAULT_ADDRESS):
