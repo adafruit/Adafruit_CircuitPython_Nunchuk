@@ -1,7 +1,11 @@
+# SPDX-FileCopyrightText: Copyright (c) 2021 John Furcean
+#
+# SPDX-License-Identifier: MIT
 """
 `adafruit_nunchuk`
 ================================================================================
-Base Library for the Nunchuck Style libraries.
+Base Library for the Nintento Nunchuck Extension Controller libraries.
+
 * Author(s): John Furcean 
 
 Implementation Notes
@@ -28,7 +32,6 @@ _DEFAULT_ADDRESS = 0x52
 _I2C_INIT_DELAY = 0.1
 _I2C_READ_DELAY = 0.01
 _I2C_BUFFER_UPDATE_DELAY = .05
-
 
 class NunchukBase:
     """Base Class which provides interface to Nintendo Nunchuk style controllers.

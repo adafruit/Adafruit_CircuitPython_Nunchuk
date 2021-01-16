@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2021 John Furcean
+# SPDX-FileCopyrightText: Copyright (c) 2021 John Furcean
 #
 # SPDX-License-Identifier: MIT
 import board
