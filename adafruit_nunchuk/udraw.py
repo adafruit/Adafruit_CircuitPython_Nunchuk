@@ -40,7 +40,7 @@ class uDraw(NunchukBase):
     def pressure(self):
         """Return current pen pressure."""
         self.read_data()
-        return (self.buffer[3])
+        return self.buffer[3]
 
     @property
     def button_pen(self):
@@ -64,4 +64,6 @@ class uDraw(NunchukBase):
     def position(self):
         """Return tuple of current position."""
         self.read_data()
-        return ((self.buffer[2] & 0x0F) << 8 | self.buffer[0]), ((self.buffer[2] & 0xF0) << 4 | self.buffer[1])
+        return ((self.buffer[2] & 0x0F) << 8 | self.buffer[0]), (
+            (self.buffer[2] & 0xF0) << 4 | self.buffer[1]
+        )
