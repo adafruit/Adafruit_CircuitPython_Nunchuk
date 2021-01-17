@@ -6,7 +6,7 @@
 ================================================================================
 CircuitPython library for the Nintendo Wii uDraw GameTablet
 
-* Author(s): David Glaude
+* Author(s): David Glaude, John Furcean
 
 Implementation Notes
 --------------------

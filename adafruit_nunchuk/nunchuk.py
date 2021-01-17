@@ -8,7 +8,7 @@
 
 CircuitPython library for Nintendo Nunchuk controller
 
-* Author(s): Carter Nelson
+* Author(s): Carter Nelson, John Furcean
 
 Implementation Notes
 --------------------

@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2021 John Furcean
+# SPDX-FileCopyrightText: 2019 Carter Nelson for Adafruit Industries
 #
 # SPDX-License-Identifier: MIT
 """
@@ -6,7 +6,7 @@
 ================================================================================
 Base Library for the Nintento Nunchuck Extension Controller libraries.
 
-* Author(s): John Furcean
+* Author(s): Carter Nelson, John Furcean
 
 Implementation Notes
 --------------------
