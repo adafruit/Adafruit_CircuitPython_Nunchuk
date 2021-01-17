@@ -5,7 +5,6 @@ import board
 from adafruit_nunchuk.classic_controller import ClassicController
 
 controller = ClassicController(board.I2C())
-
 while True:
 
     # Right Joystick: (0-31,0-31), middle is (16,16)
@@ -15,12 +14,6 @@ while True:
     # Left Joystick: (0-63,063), middle is (32,32)
     if controller.joystick_L != (32, 32):
         print(f"Left Joystick (x,y): {controller.joystick_L}")
-
-    # Triggers: 0-31
-    if controller.trigger_R > 0:
-        print(f"Right Trigger: {controller.trigger_R}")
-    if controller.trigger_L > 0:
-        print(f"Left Trigger: {controller.trigger_L}")
 
     # DPad: True or False
     if controller.dpad_D:
@@ -45,6 +38,10 @@ while True:
         print("Button Pressed: X")
     if controller.button_Y:
         print("Button Pressed: Y")
+    if controller.button_RT:
+        print("Button Pressed: RT")
+    if controller.button_LT:
+        print("Button Pressed: LT")
     if controller.button_home:
         print("Button Pressed: Home")
     if controller.button_start:
@@ -55,3 +52,4 @@ while True:
         print("Button Pressed: Plus")
     if controller.button_minus:
         print("Button Pressed: Minus")
+    

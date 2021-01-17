@@ -40,22 +40,21 @@ class ClassicController(NunchukBase):
 
         # https://wiibrew.org/wiki/Wiimote/Extension_Controllers/Classic_Controller
 
-        # right joystick
         jrx = (self.buffer[0] & 0xC0) >> 3
         jrx |= (self.buffer[1] & 0xC0) >> 5
         jrx |= (self.buffer[2] & 0x80) >> 7
         jry = self.buffer[2] & 0x1F
 
-        # right joystick
+        # left joystick
         jlx = self.buffer[0] & 0x3F
         jly = self.buffer[1] & 0x3F
 
-        # left trigger
-        tl = (self.buffer[2] & 0x60) >> 2  # pylint: disable=invalid-name
-        tl |= (self.buffer[3] & 0xE0) >> 5  # pylint: disable=invalid-name
+        # analog trigger - left
+        atl = (self.buffer[2] & 0x60) >> 2  # pylint: disable=invalid-name
+        atl |= (self.buffer[3] & 0xE0) >> 5  # pylint: disable=invalid-name
 
-        # right trigger
-        tr = self.buffer[3] & 0x1F  # pylint: disable=invalid-name
+        # analog trigger - right
+        atr = self.buffer[3] & 0x1F  # pylint: disable=invalid-name
 
         # D-Pad
         dl = not bool(self.buffer[5] & 0x2)  # pylint: disable=invalid-name
@@ -67,6 +66,8 @@ class ClassicController(NunchukBase):
         A = not bool(self.buffer[5] & 0x10)  # pylint: disable=invalid-name
         B = not bool(self.buffer[5] & 0x40)  # pylint: disable=invalid-name
         X = not bool(self.buffer[5] & 0x8)  # pylint: disable=invalid-name
+        btr = not bool(self.buffer[4] & 0x2)  # pylint: disable=invalid-name
+        btl = not bool(self.buffer[4] & 0x20)  # pylint: disable=invalid-name
         Y = not bool(self.buffer[5] & 0x20)  # pylint: disable=invalid-name
         ZL = not bool(self.buffer[5] & 0x80)  # pylint: disable=invalid-name
         ZR = not bool(self.buffer[5] & 0x4)  # pylint: disable=invalid-name
@@ -74,27 +75,8 @@ class ClassicController(NunchukBase):
         select = not bool(self.buffer[4] & 0x10)
         home = not bool(self.buffer[4] & 0x8)
 
-        return (
-            jrx,
-            jry,
-            jlx,
-            jly,
-            dl,
-            dr,
-            du,
-            dd,
-            A,
-            B,
-            X,
-            Y,
-            tr,
-            tl,
-            ZR,
-            ZL,
-            start,
-            select,
-            home,
-        )
+        return jrx, jry, jlx, jly, dl, dr, du, dd, A, B, X, Y, atr,\
+         atl, btr, btl, ZR, ZL, start, select, home
 
     @property
     def joystick_R(self):  # pylint: disable=invalid-name
@@ -148,40 +130,39 @@ class ClassicController(NunchukBase):
         return self.values[11]
 
     @property
-    def trigger_R(self):  # pylint: disable=invalid-name
-        """Return reading right trigger position"""
-        return self.values[12]
+    def button_RT(self):  # pylint: disable=invalid-name
+        """Return current pressed state of the right trigger button"""
+        return self.values[14]
 
     @property
-    def trigger_L(self):  # pylint: disable=invalid-name
-        """Return reading left trigger position"""
-        return self.values[13]
+    def button_LT(self):  # pylint: disable=invalid-name
+        """Return current pressed state of the left trigger button"""
+        return self.values[15]
 
     @property
     def button_ZR(self):  # pylint: disable=invalid-name
         """Return current pressed state of the Zr button"""
-        return self.values[14]
+        return self.values[16]
 
     @property
     def button_ZL(self):  # pylint: disable=invalid-name
         """Return current pressed state of the Zl button"""
-        return self.values[15]
+        return self.values[17]
 
     @property
     def button_start(self):
         """Return current pressed state of the Start button"""
-        return self.values[16]
+        return self.values[18]
 
     @property
     def button_select(self):
         """Return current pressed state of the Select button"""
-        self.read_data()
-        return self.values[17]
+        return self.values[19]
 
     @property
     def button_home(self):
         """Return current pressed state of the Home button"""
-        return self.values[18]
+        return self.values[20]
 
     @property
     def button_plus(self):
