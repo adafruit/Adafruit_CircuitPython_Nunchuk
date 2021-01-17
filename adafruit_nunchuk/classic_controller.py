@@ -40,15 +40,15 @@ class ClassicController(NunchukBase):
 
         # https://wiibrew.org/wiki/Wiimote/Extension_Controllers/Classic_Controller
 
-        # left joystick
-        jlx = (self.buffer[0] & 0xC0) >> 3
-        jlx |= (self.buffer[1] & 0xC0) >> 5
-        jlx |= (self.buffer[2] & 0x80) >> 7
-        jly = self.buffer[2] & 0x1F
+        # right joystick
+        jrx = (self.buffer[0] & 0xC0) >> 3
+        jrx |= (self.buffer[1] & 0xC0) >> 5
+        jrx |= (self.buffer[2] & 0x80) >> 7
+        jry = self.buffer[2] & 0x1F
 
         # right joystick
-        jrx = self.buffer[0] & 0x3F
-        jry = self.buffer[1] & 0x3F
+        jlx = self.buffer[0] & 0x3F
+        jly = self.buffer[1] & 0x3F
 
         # left trigger
         tl = (self.buffer[2] & 0x60) >> 2  # pylint: disable=invalid-name
@@ -75,10 +75,10 @@ class ClassicController(NunchukBase):
         home = not bool(self.buffer[4] & 0x8)
 
         return (
-            jlx,
-            jly,
             jrx,
             jry,
+            jlx,
+            jly,
             dl,
             dr,
             du,
