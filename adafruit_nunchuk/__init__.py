@@ -50,7 +50,9 @@ class NunchukBase:
             i2c_dev.write(b"\xF0\x55")
             time.sleep(_I2C_INIT_DELAY)
             i2c_dev.write(b"\xFB\x00")
-        self.last_updated = time.monotonic()
+            time.sleep(_I2C_INIT_DELAY)
+
+        self.last_updated = 0
 
     def read_data(self):
         """Reads data stream from register"""

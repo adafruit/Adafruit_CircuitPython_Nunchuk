@@ -13,7 +13,7 @@ Implementation Notes
 
 **Hardware:**
 
-* Wii Classic Controller http://wiibrew.org/wiki/Wiimote/Extension_Controllers/Classic_Controller
+* Wii Classic Controller https://en.wikipedia.org/wiki/Classic_Controller
 
 **Software and Dependencies:**
 
@@ -24,118 +24,171 @@ from adafruit_nunchuk import NunchukBase
 
 
 _DEFAULT_ADDRESS = 0x52
-_I2C_INIT_DELAY = 0.1
-_I2C_READ_DELAY = 0.01
 
 
 class ClassicController(NunchukBase):
-    """Class which provides interface to the Nintendo Classic controller."""
+    """Class which provides interface to the Nintendo Classic Controller."""
 
     def __init__(self, i2c, address=_DEFAULT_ADDRESS):
         super().__init__(i2c, address=address)
 
     @property
-    def joystick_right(self):
+    def values(self):  # pylint: disable=too-many-locals
+        """returns tuple of values"""
+
+        self.read_data()
+
+        # https://wiibrew.org/wiki/Wiimote/Extension_Controllers/Classic_Controller
+
+        # left joystick
+        jlx = (self.buffer[0] & 0xC0) >> 3
+        jlx |= (self.buffer[1] & 0xC0) >> 5
+        jlx |= (self.buffer[2] & 0x80) >> 7
+        jly = self.buffer[2] & 0x1F
+
+        # right joystick
+        jrx = self.buffer[0] & 0x3F
+        jry = self.buffer[1] & 0x3F
+
+        # left trigger
+        tl = (self.buffer[2] & 0x60) >> 2  # pylint: disable=invalid-name
+        tl |= (self.buffer[3] & 0xE0) >> 5  # pylint: disable=invalid-name
+
+        # right trigger
+        tr = self.buffer[3] & 0x1F  # pylint: disable=invalid-name
+
+        # D-Pad
+        dl = not bool(self.buffer[5] & 0x2)  # pylint: disable=invalid-name
+        dr = not bool(self.buffer[4] & 0x80)  # pylint: disable=invalid-name
+        du = not bool(self.buffer[5] & 0x1)  # pylint: disable=invalid-name
+        dd = not bool(self.buffer[4] & 0x40)  # pylint: disable=invalid-name
+
+        # Buttons
+        A = not bool(self.buffer[5] & 0x10)  # pylint: disable=invalid-name
+        B = not bool(self.buffer[5] & 0x40)  # pylint: disable=invalid-name
+        X = not bool(self.buffer[5] & 0x8)  # pylint: disable=invalid-name
+        Y = not bool(self.buffer[5] & 0x20)  # pylint: disable=invalid-name
+        ZL = not bool(self.buffer[5] & 0x80)  # pylint: disable=invalid-name
+        ZR = not bool(self.buffer[5] & 0x4)  # pylint: disable=invalid-name
+        start = not bool(self.buffer[4] & 0x4)
+        select = not bool(self.buffer[4] & 0x10)
+        home = not bool(self.buffer[4] & 0x8)
+
+        return (
+            jlx,
+            jly,
+            jrx,
+            jry,
+            dl,
+            dr,
+            du,
+            dd,
+            A,
+            B,
+            X,
+            Y,
+            tr,
+            tl,
+            ZR,
+            ZL,
+            start,
+            select,
+            home,
+        )
+
+    @property
+    def joystick_R(self):  # pylint: disable=invalid-name
         """Return tuple of current right joystick position."""
-        self.read_data()
-        x = (self.buffer[0] & 0xC0) >> 3
-        x |= (self.buffer[1] & 0xC0) >> 5
-        x |= (self.buffer[2] & 0x80) >> 7
 
-        return (x, self.buffer[2] & 0x1F)
+        return self.values[0], self.values[1]
 
     @property
-    def joystick_left(self):
+    def joystick_L(self):  # pylint: disable=invalid-name
         """Return tuple of current left joystick position."""
-        self.read_data()
-        return (self.buffer[0] & 0x3F, self.buffer[1] & 0x3F)
+        return self.values[2], self.values[3]
 
     @property
-    def trigger_right(self):
-        """Return reading right trigger position"""
-        self.read_data()
-        return self.buffer[3] & 0x1F
-
-    @property
-    def trigger_left(self):
-        """Return reading left trigger position"""
-        self.read_data()
-        return ((self.buffer[2] & 0x60) >> 2) | ((self.buffer[3] & 0xE0) >> 5)
-
-    @property
-    def dpad_left(self):
+    def dpad_L(self):  # pylint: disable=invalid-name
         """Return current pressed state of D-pad left."""
-        self.read_data()
-        return not bool(self.buffer[5] & 0x2)
+        return self.values[4]
 
     @property
-    def dpad_right(self):
+    def dpad_R(self):  # pylint: disable=invalid-name
         """Return current pressed state of D-pad right"""
-        self.read_data()
-        return not bool(self.buffer[4] & 0x80)
+        return self.values[5]
 
     @property
-    def dpad_up(self):
+    def dpad_U(self):  # pylint: disable=invalid-name
         """Return current pressed state of D-pad up."""
-        self.read_data()
-        return not bool(self.buffer[5] & 0x1)
+        return self.values[6]
 
     @property
-    def dpad_down(self):
+    def dpad_D(self):  # pylint: disable=invalid-name
         """Return current pressed state of D-pad down"""
-        self.read_data()
-        return not bool(self.buffer[4] & 0x40)
+        return self.values[7]
 
     @property
-    def button_a(self):
+    def button_A(self):  # pylint: disable=invalid-name
         """Return current pressed state of the A button"""
-        self.read_data()
-        return not bool(self.buffer[5] & 0x10)
+        return self.values[8]
 
     @property
-    def button_b(self):
+    def button_B(self):  # pylint: disable=invalid-name
         """Return current pressed state of the B button"""
-        self.read_data()
-        return not bool(self.buffer[5] & 0x40)
+        return self.values[9]
 
     @property
-    def button_x(self):
+    def button_X(self):  # pylint: disable=invalid-name
         """Return current pressed state of the X button"""
-        self.read_data()
-        return not bool(self.buffer[5] & 0x8)
+        return self.values[10]
 
     @property
-    def button_y(self):
+    def button_Y(self):  # pylint: disable=invalid-name
         """Return current pressed state of the Y button"""
-        self.read_data()
-        return not bool(self.buffer[5] & 0x20)
+        return self.values[11]
 
     @property
-    def button_zr(self):
+    def trigger_R(self):  # pylint: disable=invalid-name
+        """Return reading right trigger position"""
+        return self.values[12]
+
+    @property
+    def trigger_L(self):  # pylint: disable=invalid-name
+        """Return reading left trigger position"""
+        return self.values[13]
+
+    @property
+    def button_ZR(self):  # pylint: disable=invalid-name
         """Return current pressed state of the Zr button"""
-        self.read_data()
-        return not bool(self.buffer[5] & 0x4)
+        return self.values[14]
 
     @property
-    def button_zl(self):
+    def button_ZL(self):  # pylint: disable=invalid-name
         """Return current pressed state of the Zl button"""
+        return self.values[15]
+
+    @property
+    def button_start(self):
+        """Return current pressed state of the Start button"""
+        return self.values[16]
+
+    @property
+    def button_select(self):
+        """Return current pressed state of the Select button"""
         self.read_data()
-        return not bool(self.buffer[5] & 0x80)
+        return self.values[17]
 
     @property
     def button_home(self):
         """Return current pressed state of the Home button"""
-        self.read_data()
-        return not bool(self.buffer[4] & 0x8)
+        return self.values[18]
 
     @property
-    def button_start(self):
-        """Return current pressed state of the Start/Plus button"""
-        self.read_data()
-        return not bool(self.buffer[4] & 0x4)
+    def button_plus(self):
+        """Return current pressed state of the Plus(Start) button"""
+        return self.button_start
 
     @property
-    def button_select(self):
-        """Return current pressed state of the Select/Minus button"""
-        self.read_data()
-        return not bool(self.buffer[4] & 0x10)
+    def button_minus(self):
+        """Return current pressed state of the Minus(Select) button"""
+        return self.button_select

@@ -17,8 +17,8 @@ while True:
 
     # Buttons: True of False
     if controller.button_pen:
-        print("Button Pressed: PEN")
-    if controller.button_c:
+        print("Button Pressed: Pen")
+    if controller.button_C:
         print("Button Pressed: C")
-    if controller.button_z:
+    if controller.button_Z:
         print("Button Pressed: Z")

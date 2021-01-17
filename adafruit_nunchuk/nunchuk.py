@@ -38,31 +38,46 @@ class Nunchuk(NunchukBase):
         super().__init__(i2c, address=address)
 
     @property
+    def values(self):
+        """Return tuple of values."""
+        self.read_data()
+
+        # https://wiibrew.org/wiki/Wiimote/Extension_Controllers/Nunchuck
+
+        # joystick
+        jx = self.buffer[0]  # pylint: disable=invalid-name
+        jy = self.buffer[1]  # pylint: disable=invalid-name
+
+        # buttons
+        C = not bool(self.buffer[5] & 0x02)  # pylint: disable=invalid-name
+        Z = not bool(self.buffer[5] & 0x01)  # pylint: disable=invalid-name
+
+        # acceleration
+        ax = (self.buffer[5] & 0xC0) >> 6  # pylint: disable=invalid-name
+        ax |= self.buffer[2] << 2  # pylint: disable=invalid-name
+        ay = (self.buffer[5] & 0x30) >> 4  # pylint: disable=invalid-name
+        ay |= self.buffer[3] << 2  # pylint: disable=invalid-name
+        az = (self.buffer[5] & 0x0C) >> 2  # pylint: disable=invalid-name
+        az |= self.buffer[4] << 2  # pylint: disable=invalid-name
+
+        return jx, jy, C, Z, ax, ay, az
+
+    @property
     def joystick(self):
         """Return tuple of current joystick position."""
-        self.read_data()
-        return self.buffer[0], self.buffer[1]
+        return self.values[0], self.values[1]
 
     @property
     def button_C(self):  # pylint: disable=invalid-name
         """Return current pressed state of button C."""
-        self.read_data()
-        return not bool(self.buffer[5] & 0x02)
+        return self.values[2]
 
     @property
     def button_Z(self):  # pylint: disable=invalid-name
         """Return current pressed state of button Z."""
-        self.read_data()
-        return not bool(self.buffer[5] & 0x01)
+        return self.values[3]
 
     @property
     def acceleration(self):
         """Return 3 tuple of accelerometer reading."""
-        self.read_data()
-        x = (self.buffer[5] & 0xC0) >> 6
-        x |= self.buffer[2] << 2
-        y = (self.buffer[5] & 0x30) >> 4
-        y |= self.buffer[3] << 2
-        z = (self.buffer[5] & 0x0C) >> 2
-        z |= self.buffer[4] << 2
-        return x, y, z
+        return self.values[4], self.values[5], self.values[6]

@@ -13,7 +13,7 @@ Implementation Notes
 
 **Hardware:**
 
-* Wii uDraw GameTablet http://wiibrew.org/wiki/Wiimote/Extension_Controllers/Classic_Controller
+* Wii uDraw GameTablet http://wiibrew.org/wiki/Wiimote/Extension_Controllers/Drawsome_Tablet
 
 **Software and Dependencies:**
 
@@ -26,8 +26,6 @@ from adafruit_nunchuk import NunchukBase
 
 
 _DEFAULT_ADDRESS = 0x52
-_I2C_INIT_DELAY = 0.1
-_I2C_READ_DELAY = 0.01
 
 
 class UDraw(NunchukBase):
@@ -37,33 +35,50 @@ class UDraw(NunchukBase):
         super().__init__(i2c, address=address)
 
     @property
-    def pressure(self):
-        """Return current pen pressure."""
-        self.read_data()
-        return self.buffer[3]
+    def values(self):
+        """Return tuple of values."""
 
-    @property
-    def button_pen(self):
-        """Return current pressed state of the PEN button"""
         self.read_data()
-        return bool((self.buffer[5] & 0x04) >> 2)
 
-    @property
-    def button_c(self):
-        """Return current pressed state of the C button"""
-        self.read_data()
-        return not bool((self.buffer[5] & 0x02) >> 1)
+        # http://wiibrew.org/wiki/Wiimote/Extension_Controllers/Drawsome_Tablet
 
-    @property
-    def button_z(self):
-        """Return current pressed state of the Z button"""
-        self.read_data()
-        return not bool((self.buffer[5] & 0x01))
+        # position
+        px = (self.buffer[2] & 0x0F) << 8  # pylint: disable=invalid-name
+        px |= self.buffer[0]  # pylint: disable=invalid-name
+        py = (self.buffer[2] & 0xF0) << 4  # pylint: disable=invalid-name
+        py |= self.buffer[1]  # pylint: disable=invalid-name
+
+        # pressure sensor reading
+        pressure = self.buffer[3]
+
+        # buttons
+        pen = bool((self.buffer[5] & 0x04) >> 2)
+        C = not bool((self.buffer[5] & 0x02) >> 1)  # pylint: disable=invalid-name
+        Z = not bool((self.buffer[5] & 0x01))  # pylint: disable=invalid-name
+
+        return px, py, pen, C, Z, pressure
 
     @property
     def position(self):
         """Return tuple of current position."""
-        self.read_data()
-        return ((self.buffer[2] & 0x0F) << 8 | self.buffer[0]), (
-            (self.buffer[2] & 0xF0) << 4 | self.buffer[1]
-        )
+        return self.values[0], self.values[1]
+
+    @property
+    def button_pen(self):
+        """Return current pressed state of the PEN button"""
+        return self.values[2]
+
+    @property
+    def button_C(self):  # pylint: disable=invalid-name
+        """Return current pressed state of the C button"""
+        return self.values[3]
+
+    @property
+    def button_Z(self):  # pylint: disable=invalid-name
+        """Return current pressed state of the Z button"""
+        return self.values[4]
+
+    @property
+    def pressure(self):
+        """Return current pen pressure."""
+        return self.values[5]
