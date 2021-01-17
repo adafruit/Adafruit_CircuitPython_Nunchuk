@@ -75,8 +75,29 @@ class ClassicController(NunchukBase):
         select = not bool(self.buffer[4] & 0x10)
         home = not bool(self.buffer[4] & 0x8)
 
-        return jrx, jry, jlx, jly, dl, dr, du, dd, A, B, X, Y, atr,\
-         atl, btr, btl, ZR, ZL, start, select, home
+        return (
+            jrx,
+            jry,
+            jlx,
+            jly,
+            dl,
+            dr,
+            du,
+            dd,
+            A,
+            B,
+            X,
+            Y,
+            atr,
+            atl,
+            btr,
+            btl,
+            ZR,
+            ZL,
+            start,
+            select,
+            home,
+        )
 
     @property
     def joystick_R(self):  # pylint: disable=invalid-name
