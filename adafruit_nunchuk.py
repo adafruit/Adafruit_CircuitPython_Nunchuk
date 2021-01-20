@@ -51,6 +51,7 @@ __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_Nunchuk.git"
 _DEFAULT_ADDRESS = 0x52
 _I2C_INIT_DELAY = 0.1
 _I2C_READ_DELAY = 0.01
+_I2C_BUFFER_UPDATE_DELAY = 0.03
 
 
 class Nunchuk:
@@ -66,6 +67,9 @@ class Nunchuk:
             i2c_dev.write(b"\xF0\x55")
             time.sleep(_I2C_INIT_DELAY)
             i2c_dev.write(b"\xFB\x00")
+
+        # set to 0 to force read for intial
+        self.last_updated = 0
 
     @property
     def joystick(self):
@@ -96,7 +100,11 @@ class Nunchuk:
         return x, y, z
 
     def _read_data(self):
-        return self._read_register(b"\x00")
+        if (time.monotonic() - self.last_updated) > _I2C_BUFFER_UPDATE_DELAY:
+            self.last_updated = time.monotonic()
+            self._read_register(b"\x00")
+
+        return self.buffer
 
     def _read_register(self, address):
         with self.i2c_device as i2c:
@@ -104,5 +112,3 @@ class Nunchuk:
             i2c.write(address)
             time.sleep(_I2C_READ_DELAY)
             i2c.readinto(self.buffer)
-        time.sleep(_I2C_READ_DELAY)
-        return self.buffer
