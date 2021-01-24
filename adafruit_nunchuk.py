@@ -48,17 +48,16 @@ from adafruit_bus_device.i2c_device import I2CDevice
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_Nunchuk.git"
 
-_DEFAULT_ADDRESS = 0x52
 _I2C_INIT_DELAY = 0.1
-_I2C_READ_DELAY = 0.01
 
 
 class Nunchuk:
     """Class which provides interface to Nintendo Nunchuk controller."""
 
-    def __init__(self, i2c, address=_DEFAULT_ADDRESS):
-        self.buffer = bytearray(6)
+    def __init__(self, i2c, address=0x52, i2c_read_delay=0.002):
+        self.buffer = bytearray(8)
         self.i2c_device = I2CDevice(i2c, address)
+        self._i2c_read_delay = i2c_read_delay
         time.sleep(_I2C_INIT_DELAY)
         with self.i2c_device as i2c_dev:
             # turn off encrypted data
@@ -100,9 +99,7 @@ class Nunchuk:
 
     def _read_register(self, address):
         with self.i2c_device as i2c:
-            time.sleep(_I2C_READ_DELAY)
             i2c.write(address)
-            time.sleep(_I2C_READ_DELAY)
+            time.sleep(self._i2c_read_delay)  # at least 200us
             i2c.readinto(self.buffer)
-        time.sleep(_I2C_READ_DELAY)
         return self.buffer
