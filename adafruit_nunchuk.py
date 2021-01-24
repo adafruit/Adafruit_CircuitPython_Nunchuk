@@ -39,12 +39,13 @@ class Nunchuk:
     Class which provides interface to Nintendo Nunchuk controller.
 
     :param i2c: The `busio.I2C` object to use.
-    :param int address: (optional) The I2C address of the device.
-    Default is 0x52.
-    :param float i2c_read_delay: (optional) The time in seconds to pause
-    between the I2C write and read. This needs to be at least 200us. A
-    conservative default of 2000us is used since some hosts may not be
-    able to achieve such timing.
+    :param address: The I2C address of the device. Default is 0x52.
+    :type address: int, optional
+    :param i2c_read_delay: The time in seconds to pause between the
+        I2C write and read. This needs to be at least 200us. A
+        conservative default of 2000us is used since some hosts may
+        not be able to achieve such timing.
+    :type i2c_read_delay: float, optional
     """
 
     def __init__(self, i2c, address=0x52, i2c_read_delay=0.002):
