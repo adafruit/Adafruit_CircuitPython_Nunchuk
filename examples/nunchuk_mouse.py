@@ -12,6 +12,7 @@ m = Mouse(usb_hid.devices)
 nc = adafruit_nunchuk.Nunchuk(board.I2C())
 
 while True:
+    nc.read_data()
     x, y = nc.joystick
     x = (x - 128) // 2
     y = (128 - y) // 2

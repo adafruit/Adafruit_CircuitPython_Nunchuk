@@ -5,27 +5,20 @@
 """
 `adafruit_nunchuk`
 ================================================================================
-
 CircuitPython library for Nintendo Nunchuk controller
-
-
 * Author(s): Carter Nelson
-
 Implementation Notes
 --------------------
-
 **Hardware:**
-
 * `Wii Remote Nunchuk <https://en.wikipedia.org/wiki/Wii_Remote#Nunchuk>`_
 * `Wiichuck <https://www.adafruit.com/product/342>`_
-
 **Software and Dependencies:**
-
 * Adafruit CircuitPython firmware for the supported boards:
   https://github.com/adafruit/circuitpython/releases
 * Adafruit's Bus Device library: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
 """
 import time
+from collections import namedtuple
 from adafruit_bus_device.i2c_device import I2CDevice
 
 __version__ = "0.0.0-auto.0"
@@ -37,7 +30,6 @@ _I2C_INIT_DELAY = 0.1
 class Nunchuk:
     """
     Class which provides interface to Nintendo Nunchuk controller.
-
     :param i2c: The `busio.I2C` object to use.
     :param address: The I2C address of the device. Default is 0x52.
     :type address: int, optional
@@ -61,25 +53,38 @@ class Nunchuk:
             i2c_dev.write(b"\xFB\x00")
 
     @property
+    def values(self):
+        """Return named tuple of all the input values."""
+        self.read_data()
+        (sx, sy), bc, bz, (ax, ay, az) = (  # pylint: disable=invalid-name
+            self.joystick,
+            self.button_C,
+            self.button_Z,
+            self.acceleration,
+        )
+        Values = namedtuple("Values", "sx sy bc bz ax ay az")
+        return Values(sx, sy, bc, bz, ax, ay, az)
+
+    @property
     def joystick(self):
         """Return tuple of current joystick position."""
-        self._read_data()
         return self.buffer[0], self.buffer[1]
 
     @property
-    def button_C(self):  # pylint: disable=invalid-name
+    def button_C(
+        self,
+    ):  # pylint: disable=invalid-name
         """Return current pressed state of button C."""
-        return not bool(self._read_data()[5] & 0x02)
+        return not bool(self.buffer[5] & 0x02)
 
     @property
     def button_Z(self):  # pylint: disable=invalid-name
         """Return current pressed state of button Z."""
-        return not bool(self._read_data()[5] & 0x01)
+        return not bool(self.buffer[5] & 0x01)
 
     @property
     def acceleration(self):
         """Return 3 tuple of accelerometer reading."""
-        self._read_data()
         x = (self.buffer[5] & 0xC0) >> 6
         x |= self.buffer[2] << 2
         y = (self.buffer[5] & 0x30) >> 4
@@ -88,7 +93,8 @@ class Nunchuk:
         z |= self.buffer[4] << 2
         return x, y, z
 
-    def _read_data(self):
+    def read_data(self):
+        """Reads all of the raw input data from i2c."""
         return self._read_register(b"\x00")
 
     def _read_register(self, address):

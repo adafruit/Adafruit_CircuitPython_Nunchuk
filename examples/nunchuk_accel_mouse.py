@@ -27,6 +27,7 @@ CHECK_COUNT = 0
 #    print((0 if nc.button_C else 1, 0 if nc.button_Z else 1))
 
 while True:
+    nc.read_data()
     accel = nc.acceleration
     #    print(accel)
     #    x, y = nc.joystick
