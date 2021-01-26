@@ -5,14 +5,22 @@
 """
 `adafruit_nunchuk`
 ================================================================================
+
 CircuitPython library for Nintendo Nunchuk controller
+
+
 * Author(s): Carter Nelson
+
 Implementation Notes
 --------------------
+
 **Hardware:**
+
 * `Wii Remote Nunchuk <https://en.wikipedia.org/wiki/Wii_Remote#Nunchuk>`_
 * `Wiichuck <https://www.adafruit.com/product/342>`_
+
 **Software and Dependencies:**
+
 * Adafruit CircuitPython firmware for the supported boards:
   https://github.com/adafruit/circuitpython/releases
 * Adafruit's Bus Device library: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
@@ -71,9 +79,7 @@ class Nunchuk:
         return self.buffer[0], self.buffer[1]
 
     @property
-    def button_C(
-        self,
-    ):  # pylint: disable=invalid-name
+    def button_C(self):  # pylint: disable=invalid-name
         """Return current pressed state of button C."""
         return not bool(self.buffer[5] & 0x02)
 
