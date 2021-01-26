@@ -8,12 +8,15 @@ import adafruit_nunchuk
 nc = adafruit_nunchuk.Nunchuk(board.I2C())
 
 while True:
-    x, y = nc.joystick
-    ax, ay, az = nc.acceleration
-    print("joystick = {},{}".format(x, y))
-    print("accceleration ax={}, ay={}, az={}".format(ax, ay, az))
-    if nc.button_C:
+    joystick, buttons, acceleration = nc.values
+    print("joystick = {},{}".format(joystick.x, joystick.y))
+    print(
+        "accceleration ax={}, ay={}, az={}".format(
+            acceleration.x, acceleration.y, acceleration.z
+        )
+    )
+    if buttons.C:
         print("button C")
-    if nc.button_Z:
+    if buttons.Z:
         print("button Z")
     time.sleep(0.5)

@@ -27,6 +27,7 @@ CHECK_COUNT = 0
 #    print((0 if nc.button_C else 1, 0 if nc.button_Z else 1))
 
 while True:
+
     x, y = nc.joystick
     # Eliminate spurious reads
     if x == 255 or y == 255:
@@ -36,8 +37,9 @@ while True:
 
     m.move(int(scaleX * relX), int(scaleY * relY), 0)
 
-    c = nc.button_C
-    z = nc.button_Z
+    buttons = nc.buttons
+    c = buttons.C
+    z = buttons.Z
 
     if z and not zDown:
         stillDown = True
