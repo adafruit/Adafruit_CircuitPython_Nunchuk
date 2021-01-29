@@ -91,22 +91,6 @@ class Nunchuk:
         """The current accelerometer reading."""
         return self._acceleration()
 
-    @property
-    def button_C(self):  # pylint: disable=invalid-name
-        """
-        The current pressed state of button C.
-        """
-        print("`button_C` is deprecated. Please use the `buttons` property instead")
-        return self._buttons().C
-
-    @property
-    def button_Z(self):  # pylint: disable=invalid-name
-        """
-        The current pressed state of button Z.
-        """
-        print("`button_Z` is deprecated. Please use the `buttons` property instead")
-        return self._buttons().Z
-
     def _joystick(self, do_read=True):
         if do_read:
             self._read_data()
