@@ -13,9 +13,8 @@ while True:
     print("joystick = {},{}".format(x, y))
     print("accceleration ax={}, ay={}, az={}".format(ax, ay, az))
 
-    buttons = nc.buttons
-    if buttons.C:
+    if nc.buttons.C:
         print("button C")
-    if buttons.Z:
+    if nc.buttons.Z:
         print("button Z")
     time.sleep(0.5)
