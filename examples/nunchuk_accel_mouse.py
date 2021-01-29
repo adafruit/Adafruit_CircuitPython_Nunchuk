@@ -27,6 +27,7 @@ CHECK_COUNT = 0
 #    print((0 if nc.button_C else 1, 0 if nc.button_Z else 1))
 
 while True:
+
     accel = nc.acceleration
     #    print(accel)
     #    x, y = nc.joystick
@@ -41,9 +42,10 @@ while True:
     relY = y - centerY
 
     m.move(int(scaleX * relX), int(scaleY * relY), 0)
+    buttons = nc.buttons
 
-    c = nc.button_C
-    z = nc.button_Z
+    c = buttons.C
+    z = buttons.Z
 
     if z and not zDown:
         stillDown = True
