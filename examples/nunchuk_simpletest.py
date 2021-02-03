@@ -3,9 +3,9 @@
 
 import time
 import board
-import adafruit_nunchuk
+from adafruit_nunchuk.nunchuk import Nunchuk
 
-nc = adafruit_nunchuk.Nunchuk(board.I2C())
+nc = Nunchuk(board.I2C())
 
 while True:
     x, y = nc.joystick

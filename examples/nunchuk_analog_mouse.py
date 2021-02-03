@@ -4,16 +4,16 @@
 import board
 import usb_hid
 from adafruit_hid.mouse import Mouse
-import adafruit_nunchuk
+from adafruit_nunchuk.nunchuk import Nunchuk
 
 m = Mouse(usb_hid.devices)
-nc = adafruit_nunchuk.Nunchuk(board.I2C())
+nc = Nunchuk(board.I2C())
 
 centerX = 128
 centerY = 128
 
-scaleX = 0.3
-scaleY = 0.3
+scaleX = 0.15
+scaleY = 0.15
 
 cDown = False
 zDown = False
