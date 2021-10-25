@@ -32,6 +32,11 @@ Usage Example
 
 See nunchuk_simpletest.py in examples folder.
 
+Documentation
+=============
+
+API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/nunchuk/en/latest/>`_.
+
 Contributing
 ============
 
