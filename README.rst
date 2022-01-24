@@ -2,7 +2,7 @@ Introduction
 ============
 
 .. image:: https://readthedocs.org/projects/adafruit-circuitpython-nunchuk/badge/?version=latest
-    :target: https://circuitpython.readthedocs.io/projects/nunchuk/en/latest/
+    :target: https://docs.circuitpython.org/projects/nunchuk/en/latest/
     :alt: Documentation Status
 
 .. image:: https://img.shields.io/discord/327254708534116352.svg
@@ -35,7 +35,7 @@ See nunchuk_simpletest.py in examples folder.
 Documentation
 =============
 
-API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/nunchuk/en/latest/>`_.
+API documentation for this library can be found on `Read the Docs <https://docs.circuitpython.org/projects/nunchuk/en/latest/>`_.
 
 Contributing
 ============
