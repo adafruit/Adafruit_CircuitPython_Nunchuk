@@ -7,7 +7,9 @@ from adafruit_hid.mouse import Mouse
 import adafruit_nunchuk
 
 m = Mouse(usb_hid.devices)
-nc = adafruit_nunchuk.Nunchuk(board.I2C())
+i2c = board.I2C()  # uses board.SCL and board.SDA
+# i2c = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
+nc = adafruit_nunchuk.Nunchuk(i2c)
 
 centerX = 120
 centerY = 110

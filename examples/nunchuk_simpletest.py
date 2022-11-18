@@ -5,6 +5,8 @@ import time
 import board
 import adafruit_nunchuk
 
+i2c = board.I2C()  # uses board.SCL and board.SDA
+# i2c = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
 nc = adafruit_nunchuk.Nunchuk(board.I2C())
 
 while True:
