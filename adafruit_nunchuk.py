@@ -30,7 +30,7 @@ from collections import namedtuple
 from adafruit_bus_device.i2c_device import I2CDevice
 
 try:
-    from typing import Type
+    import typing  # pylint: disable=unused-import
     from busio import I2C
 except ImportError:
     pass
@@ -72,7 +72,7 @@ class Nunchuk:
             i2c_dev.write(b"\xFB\x00")
 
     @property
-    def values(self) -> Type[tuple]:
+    def values(self) -> _Values:
         """The current state of all values."""
         self._read_data()
         return self._Values(
@@ -82,33 +82,33 @@ class Nunchuk:
         )
 
     @property
-    def joystick(self) -> Type[tuple]:
+    def joystick(self) -> _Joystick:
         """The current joystick position."""
         return self._joystick()
 
     @property
-    def buttons(self) -> Type[tuple]:  # pylint: disable=invalid-name
+    def buttons(self) -> _Buttons:  # pylint: disable=invalid-name
         """The current pressed state of buttons C and Z."""
         return self._buttons()
 
     @property
-    def acceleration(self) -> Type[tuple]:
+    def acceleration(self) -> _Acceleration:
         """The current accelerometer reading."""
         return self._acceleration()
 
-    def _joystick(self, do_read: bool = True) -> Type[tuple]:
+    def _joystick(self, do_read: bool = True) -> _Joystick:
         if do_read:
             self._read_data()
         return self._Joystick(self.buffer[0], self.buffer[1])  # x, y
 
-    def _buttons(self, do_read: bool = True) -> Type[tuple]:
+    def _buttons(self, do_read: bool = True) -> _Buttons:
         if do_read:
             self._read_data()
         return self._Buttons(
             not bool(self.buffer[5] & 0x02), not bool(self.buffer[5] & 0x01)  # C  # Z
         )
 
-    def _acceleration(self, do_read: bool = True) -> Type[tuple]:
+    def _acceleration(self, do_read: bool = True) -> _Acceleration:
         if do_read:
             self._read_data()
         return self._Acceleration(
