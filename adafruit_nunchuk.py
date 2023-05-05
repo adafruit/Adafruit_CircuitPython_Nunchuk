@@ -60,8 +60,17 @@ class Nunchuk:
     def __init__(
         self, i2c: I2C, address: int = 0x52, i2c_read_delay: float = 0.002
     ) -> None:
-        self.buffer = bytearray(8)
-        self.i2c_device = I2CDevice(i2c, address)
+        for i in range(10):
+            try:
+                self.buffer = bytearray(8)
+                self.i2c_device = I2CDevice(i2c, address)
+            except ValueError:
+                # boot up delay for third-party controllers
+                time.sleep(1)
+                if i < 10:
+                    continue
+                raise
+            break
         self._i2c_read_delay = i2c_read_delay
         time.sleep(_I2C_INIT_DELAY)
         with self.i2c_device as i2c_dev:
