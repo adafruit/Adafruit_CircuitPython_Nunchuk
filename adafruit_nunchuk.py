@@ -61,6 +61,13 @@ class Nunchuk:
         self, i2c: I2C, address: int = 0x52, i2c_read_delay: float = 0.002
     ) -> None:
         self.buffer = bytearray(8)
+        # -| HACK |---------------------------------------------------
+        # fixes quirk with RP2040 + 3rd party controllers
+        while not i2c.try_lock():
+            pass
+        _ = i2c.scan()
+        i2c.unlock()
+        # ------------------------------------------------------------
         self.i2c_device = I2CDevice(i2c, address)
         self._i2c_read_delay = i2c_read_delay
         time.sleep(_I2C_INIT_DELAY)
