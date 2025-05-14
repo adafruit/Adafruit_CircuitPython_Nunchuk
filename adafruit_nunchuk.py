@@ -25,12 +25,15 @@ Implementation Notes
   https://github.com/adafruit/circuitpython/releases
 * Adafruit's Bus Device library: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
 """
+
 import time
 from collections import namedtuple
+
 from adafruit_bus_device.i2c_device import I2CDevice
 
 try:
-    import typing  # pylint: disable=unused-import
+    import typing
+
     from busio import I2C
 except ImportError:
     pass
@@ -57,9 +60,7 @@ class Nunchuk:
     _Buttons = namedtuple("Buttons", ("C", "Z"))
     _Acceleration = namedtuple("Acceleration", ("x", "y", "z"))
 
-    def __init__(
-        self, i2c: I2C, address: int = 0x52, i2c_read_delay: float = 0.002
-    ) -> None:
+    def __init__(self, i2c: I2C, address: int = 0x52, i2c_read_delay: float = 0.002) -> None:
         self.buffer = bytearray(8)
         # -| HACK |---------------------------------------------------
         # fixes quirk with RP2040 + 3rd party controllers
@@ -74,9 +75,9 @@ class Nunchuk:
         with self.i2c_device as i2c_dev:
             # turn off encrypted data
             # http://wiibrew.org/wiki/Wiimote/Extension_Controllers
-            i2c_dev.write(b"\xF0\x55")
+            i2c_dev.write(b"\xf0\x55")
             time.sleep(_I2C_INIT_DELAY)
-            i2c_dev.write(b"\xFB\x00")
+            i2c_dev.write(b"\xfb\x00")
 
     @property
     def values(self) -> _Values:
@@ -94,7 +95,7 @@ class Nunchuk:
         return self._joystick()
 
     @property
-    def buttons(self) -> _Buttons:  # pylint: disable=invalid-name
+    def buttons(self) -> _Buttons:
         """The current pressed state of buttons C and Z."""
         return self._buttons()
 
@@ -112,7 +113,8 @@ class Nunchuk:
         if do_read:
             self._read_data()
         return self._Buttons(
-            not bool(self.buffer[5] & 0x02), not bool(self.buffer[5] & 0x01)  # C  # Z
+            not bool(self.buffer[5] & 0x02),
+            not bool(self.buffer[5] & 0x01),  # C  # Z
         )
 
     def _acceleration(self, do_read: bool = True) -> _Acceleration:

@@ -4,6 +4,7 @@
 import board
 import usb_hid
 from adafruit_hid.mouse import Mouse
+
 import adafruit_nunchuk
 
 m = Mouse(usb_hid.devices)
