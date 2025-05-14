@@ -2,7 +2,9 @@
 # SPDX-License-Identifier: MIT
 
 import time
+
 import board
+
 import adafruit_nunchuk
 
 i2c = board.I2C()  # uses board.SCL and board.SDA
@@ -12,8 +14,8 @@ nc = adafruit_nunchuk.Nunchuk(i2c)
 while True:
     x, y = nc.joystick
     ax, ay, az = nc.acceleration
-    print("joystick = {},{}".format(x, y))
-    print("accceleration ax={}, ay={}, az={}".format(ax, ay, az))
+    print(f"joystick = {x},{y}")
+    print(f"accceleration ax={ax}, ay={ay}, az={az}")
 
     if nc.buttons.C:
         print("button C")
